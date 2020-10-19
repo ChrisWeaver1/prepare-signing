@@ -71,6 +71,7 @@ async function run() {
       const profileIds = await get(`https://api.appstoreconnect.apple.com/v1/bundleIds/${bundleId.id}/relationships/profiles`, { }, token);  
       const rawProfileIds = profileIds.data.map(profile => profile.id);
       console.log(profileIds);
+      console.log(rawProfileIds);
       if (rawProfileIds) {
         const profilesResponse = await get("https://api.appstoreconnect.apple.com/v1/profiles", { "filter[id]": `${rawProfileIds}`, "filter[profileType]": signType }, token); // ProfilesResponse Type
         console.log(profilesResponse);
@@ -95,8 +96,8 @@ async function run() {
     }
   
   } catch (error) {
-    console.log("error: " + error.message);
-    core.setFailed(error.message);
+    console.log("error: " + error);
+    core.setFailed(error);
   }
 } 
 
