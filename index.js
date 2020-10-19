@@ -35,18 +35,27 @@ async function get(url, params, token, method = "GET") {
 function setupProvisioning(profileContent, profileUUID) {
   const profileName = `${profileUUID}.mobileprovision`;
   shell.exec(`mkdir -p ~/Library/MobileDevice/Provisioning\\ Profiles`);
+  console.log('1')
   shell.exec(`(echo ${profileContent} | base64 --decode) > ~/Library/MobileDevice/Provisioning\\ Profiles/${profileName}`);
+  console.log('2')
 }
 
 function setupKeychain(keychainName, keychainPassword, base64P12File, p12Password) {
   const tempCertificateName = `tmp.p12`;
   shell.exec(`(echo ${base64P12File} | base64 --decode) > ${tempCertificateName}`);
+  console.log('3')
   shell.exec(`security create-keychain -p ${keychainPassword} ${keychainName}`);
+  console.log('4')
   shell.exec(`security list-keychains -d user -s login.keychain ${keychainName}`);
+  console.log('5')
   shell.exec(`security import ${tempCertificateName} -k ${keychainName} -P ${p12Password} -T /usr/bin/codesign -T /usr/bin/security`);
+  console.log('6')
   shell.exec(`security set-keychain-settings -lut 1000 ${keychainName}`);
+  console.log('7')
   shell.exec(`security unlock-keychain -p ${keychainPassword} ${keychainName}`);
+  console.log('8')
   shell.exec(`security set-key-partition-list -S apple-tool:,apple: -s -k ${keychainPassword} ${keychainName}`);
+  console.log('9')
   shell.exec(`rm ${tempCertificateName}`);
 }
 
