@@ -70,9 +70,10 @@ async function run() {
     if (bundleId) {
       const profileIds = await get(`https://api.appstoreconnect.apple.com/v1/bundleIds/${bundleId.id}/relationships/profiles`, { }, token);  
       const rawProfileIds = profileIds.data.map(profile => profile.id);
-
+      console.log(profileIds);
       if (rawProfileIds) {
         const profilesResponse = await get("https://api.appstoreconnect.apple.com/v1/profiles", { "filter[id]": `${rawProfileIds}`, "filter[profileType]": signType }, token); // ProfilesResponse Type
+        console.log(profilesResponse);
         console.log(profilesResponse.data);
         const profile = profilesResponse.data[0];
 
